@@ -35,6 +35,7 @@ class Main {
 
   onResize () {
     this.renderer.onResize()
+    this.camera.onResize()
   }
 
   render () {
