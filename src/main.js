@@ -2,6 +2,7 @@ import { Scene } from 'three'
 import Lights from './objects/Lights'
 import Camera from './commons/Camera'
 import Renderer from './commons/Renderer'
+import Boar from './objects/Boar'
 
 class Main {
   constructor () {
@@ -14,6 +15,7 @@ class Main {
     document.body.appendChild(this.renderer.domElement)
 
     this.createLights()
+    this.createBoar()
 
     this.bindMethods()
     this.addEvents()
@@ -23,6 +25,12 @@ class Main {
   createLights () {
     this.lights = new Lights()
     this.scene.add(this.lights)
+  }
+
+  createBoar () {
+    this.boar = new Boar()
+    this.boar.load()
+    this.scene.add(this.boar)
   }
 
   bindMethods () {
@@ -39,6 +47,7 @@ class Main {
   }
 
   render () {
+    this.boar.update()
     this.renderer.render(this.scene, this.camera)
 
     window.requestAnimationFrame(this.render.bind(this))

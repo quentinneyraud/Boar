@@ -9,7 +9,7 @@ export default class Camera extends PerspectiveCamera {
     this.controls = new THREE.OrbitControls(this)
     this.setSize()
     this.lookAt(0, 0, 0)
-    this.position.set(0, 0, 30)
+    this.position.set(0, 0, 3)
   }
 
   setSize () {
