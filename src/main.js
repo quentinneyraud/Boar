@@ -1,8 +1,14 @@
-import { Scene } from 'three'
-import Lights from './objects/Lights'
+import { Scene, Clock } from 'three'
 import Camera from './commons/Camera'
 import Renderer from './commons/Renderer'
+import { World, NaiveBroadphase } from 'cannon'
+
+// objects
+import Lights from './objects/Lights'
 import Boar from './objects/Boar'
+import Plane from './objects/Plane'
+
+let clock = new Clock()
 
 class Main {
   constructor () {
@@ -14,12 +20,20 @@ class Main {
     document.body.style.overflow = 'hidden'
     document.body.appendChild(this.renderer.domElement)
 
+    this.createWorld()
     this.createLights()
     this.createBoar()
+    this.createPlane()
 
     this.bindMethods()
     this.addEvents()
     this.render()
+  }
+
+  createWorld () {
+    this.world = new World()
+    this.world.gravity.set(0, 0, -9.82)
+    this.world.broadphase = new NaiveBroadphase()
   }
 
   createLights () {
@@ -28,9 +42,14 @@ class Main {
   }
 
   createBoar () {
-    this.boar = new Boar()
+    this.boar = new Boar(this.world)
     this.boar.load()
     this.scene.add(this.boar)
+  }
+
+  createPlane () {
+    this.plane = new Plane(this.world)
+    this.scene.add(this.plane)
   }
 
   bindMethods () {
@@ -47,7 +66,11 @@ class Main {
   }
 
   render () {
-    this.boar.update()
+    let d = clock.getDelta()
+    this.world.step(d)
+    // if (this.boar.sphereBody) console.log(this.boar.sphereBody.position)
+    this.boar.update(d)
+    this.plane.update(d)
     this.renderer.render(this.scene, this.camera)
 
     window.requestAnimationFrame(this.render.bind(this))
