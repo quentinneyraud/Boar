@@ -6,7 +6,7 @@ import { World, NaiveBroadphase } from 'cannon'
 // objects
 import Lights from './objects/Lights'
 import Boar from './objects/Boar'
-import Plane from './objects/Plane'
+import Planet from './objects/Planet'
 
 let clock = new Clock()
 
@@ -22,8 +22,8 @@ class Main {
 
     this.createWorld()
     this.createLights()
-    this.createBoar()
-    this.createPlane()
+    // this.createBoar()
+    this.createPlanet()
 
     this.bindMethods()
     this.addEvents()
@@ -47,9 +47,10 @@ class Main {
     this.scene.add(this.boar)
   }
 
-  createPlane () {
-    this.plane = new Plane(this.world)
-    this.scene.add(this.plane)
+  createPlanet () {
+    this.planet = new Planet(this.world)
+    console.log(this.planet)
+    this.scene.add(this.planet)
   }
 
   bindMethods () {
@@ -67,10 +68,11 @@ class Main {
 
   render () {
     let d = clock.getDelta()
-    this.world.step(d)
+    let e = clock.getElapsedTime()
+    this.world.step(d, e)
     // if (this.boar.sphereBody) console.log(this.boar.sphereBody.position)
-    this.boar.update(d)
-    this.plane.update(d)
+    if (this.boar) this.boar.update(d, e)
+    this.planet.update(d, e)
     this.renderer.render(this.scene, this.camera)
 
     window.requestAnimationFrame(this.render.bind(this))

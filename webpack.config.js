@@ -35,7 +35,7 @@ module.exports = {
         exclude: path.resolve(__dirname, './node_modules/')
       }, {
         test: /\.(vert|frag|glsl|shader|txt)$/i,
-        use: 'raw-loader',
+        use: ['raw-loader', 'glslify-loader'],
         exclude: path.resolve(__dirname, './node_modules/')
       }, {
         type: 'javascript/auto',
