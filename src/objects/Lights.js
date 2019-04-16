@@ -8,4 +8,6 @@ export default class Lights extends Group {
 
     this.add(ambientLight)
   }
+
+  update () {}
 }

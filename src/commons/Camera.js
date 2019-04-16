@@ -6,9 +6,10 @@ export default class Camera extends PerspectiveCamera {
   constructor () {
     super()
 
+    // this.far = 40
     this.controls = new THREE.OrbitControls(this)
     this.setSize()
-    this.position.set(0, 5, 30)
+    this.position.set(0, 3, 7)
     this.lookAt(0, 0, 0)
   }
 
@@ -52,9 +53,6 @@ export default class Camera extends PerspectiveCamera {
       z: endRotation.z,
       onUpdate: () => {
         this.updateProjectionMatrix()
-      },
-      onComplete: () => {
-        console.log(this)
       }
     })
   }

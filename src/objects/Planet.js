@@ -1,4 +1,4 @@
-import { Object3D, Mesh, ShaderMaterial, SphereGeometry } from 'three'
+import { Object3D, Mesh, ShaderMaterial, PlaneGeometry, DoubleSide } from 'three'
 // import { Plane as CPlane, Body } from 'cannon'
 import glslify from 'glslify'
 import vertexShader from '../shaders/planet.vert'
@@ -13,10 +13,13 @@ export default class Planet extends Object3D {
     this.createGeometry()
     this.createMaterial()
     this.createObject()
+
+    this.rotation.set(-Math.PI / 2, 0, 0)
+    this.position.set(0, 0, 0)
   }
 
   createGeometry () {
-    this.geometry = new SphereGeometry(10, 100, 100)
+    this.geometry = new PlaneGeometry(100, 100, 200, 200)
   }
 
   createMaterial () {
@@ -24,11 +27,19 @@ export default class Planet extends Object3D {
       time: {
         type: 'f',
         value: 0.0
+      },
+      point: {
+        type: 'vec2',
+        value: {
+          x: 0.5,
+          y: 0.55
+        }
       }
     }
     this.material = new ShaderMaterial({
       uniforms: this.uniforms,
-      // transparent: true,
+      side: DoubleSide,
+      transparent: true,
       vertexShader: glslify(vertexShader),
       fragmentShader: glslify(fragmentShader)
     })

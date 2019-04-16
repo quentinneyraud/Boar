@@ -2,11 +2,15 @@ import { Scene, Clock } from 'three'
 import Camera from './commons/Camera'
 import Renderer from './commons/Renderer'
 import { World, NaiveBroadphase } from 'cannon'
+import * as THREE from 'three'
 
 // objects
 import Lights from './objects/Lights'
 import Boar from './objects/Boar'
 import Planet from './objects/Planet'
+import { TweenMax } from 'gsap'
+global.THREE = THREE
+require('three/examples/js/loaders/GLTFLoader')
 
 let clock = new Clock()
 
@@ -15,6 +19,7 @@ class Main {
     this.camera = new Camera()
     this.scene = new Scene()
     this.renderer = new Renderer()
+    this.objects = []
 
     document.body.style.margin = 0
     document.body.style.overflow = 'hidden'
@@ -22,12 +27,24 @@ class Main {
 
     this.createWorld()
     this.createLights()
-    // this.createBoar()
+    this.createBoar()
     this.createPlanet()
 
     this.bindMethods()
     this.addEvents()
     this.render()
+  }
+
+  load () {
+    let promises = this.objects.map(o => o.load && o.load())
+    return Promise.all(promises)
+      .then(() => {
+        this.objects.forEach(o => this.scene.add(o))
+      })
+  }
+
+  start () {
+    this.objects.forEach(o => o.start && o.start())
   }
 
   createWorld () {
@@ -38,19 +55,33 @@ class Main {
 
   createLights () {
     this.lights = new Lights()
-    this.scene.add(this.lights)
+    this.objects.push(this.lights)
   }
 
   createBoar () {
-    this.boar = new Boar(this.world)
-    this.boar.load()
-    this.scene.add(this.boar)
+    let boar = new Boar(this.world, -4, -4)
+    this.objects.push(boar)
+    boar = new Boar(this.world, -3, -3)
+    this.objects.push(boar)
+    boar = new Boar(this.world, -2, -2)
+    this.objects.push(boar)
+    boar = new Boar(this.world, -1, -1)
+    this.objects.push(boar)
+    boar = new Boar(this.world, 0, 0)
+    this.objects.push(boar)
+    boar = new Boar(this.world, 3, -3)
+    this.objects.push(boar)
+    boar = new Boar(this.world, 2, -2)
+    this.objects.push(boar)
+    boar = new Boar(this.world, 1, -1)
+    this.objects.push(boar)
+    boar = new Boar(this.world, 4, -4)
+    this.objects.push(boar)
   }
 
   createPlanet () {
     this.planet = new Planet(this.world)
-    console.log(this.planet)
-    this.scene.add(this.planet)
+    this.objects.push(this.planet)
   }
 
   bindMethods () {
@@ -69,10 +100,13 @@ class Main {
   render () {
     let d = clock.getDelta()
     let e = clock.getElapsedTime()
-    this.world.step(d, e)
-    // if (this.boar.sphereBody) console.log(this.boar.sphereBody.position)
-    if (this.boar) this.boar.update(d, e)
-    this.planet.update(d, e)
+
+    this.camera.position.x = Math.sin(e * 0.2) * 10
+    this.camera.position.z = Math.cos(e * 0.5) * 10
+    this.camera.lookAt(0, 0, 0)
+
+    this.objects.forEach(o => o.update(d, e))
+
     this.renderer.render(this.scene, this.camera)
 
     window.requestAnimationFrame(this.render.bind(this))
@@ -80,4 +114,13 @@ class Main {
 }
 
 /* eslint-disable no-new */
-new Main()
+let main = new Main()
+main.load()
+  .then(() => {
+    TweenMax.staggerTo('.color', 0.5, {
+      yPercent: -100,
+      delay: 2
+    }, 0.05, () => {
+      main.start()
+    })
+  })
