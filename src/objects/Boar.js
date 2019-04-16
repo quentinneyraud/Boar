@@ -2,13 +2,12 @@ import { Object3D, AnimationMixer, Color, GLTFLoader } from 'three'
 require('three/examples/js/utils/SkeletonUtils')
 
 export default class Boar extends Object3D {
-  constructor (world, x = 0, z = 0) {
+  constructor (x = 0, z = 0) {
     super()
 
     this.model = null
     this.object = null
     this.mixer = null
-    this.world = world
     this.position.set(x, 0, z)
     this.rotation.set(Math.PI / 2, Math.PI / 2, 0)
   }

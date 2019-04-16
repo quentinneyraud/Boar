@@ -1,7 +1,6 @@
 import { Scene, Clock } from 'three'
 import Camera from './commons/Camera'
 import Renderer from './commons/Renderer'
-import { World, NaiveBroadphase } from 'cannon'
 import * as THREE from 'three'
 
 // objects
@@ -25,7 +24,6 @@ class Main {
     document.body.style.overflow = 'hidden'
     document.body.appendChild(this.renderer.domElement)
 
-    this.createWorld()
     this.createLights()
     this.createBoar()
     this.createPlanet()
@@ -47,40 +45,34 @@ class Main {
     this.objects.forEach(o => o.start && o.start())
   }
 
-  createWorld () {
-    this.world = new World()
-    this.world.gravity.set(0, 0, -9.82)
-    this.world.broadphase = new NaiveBroadphase()
-  }
-
   createLights () {
     this.lights = new Lights()
     this.objects.push(this.lights)
   }
 
   createBoar () {
-    let boar = new Boar(this.world, -4, -4)
+    let boar = new Boar(-4, -4)
     this.objects.push(boar)
-    boar = new Boar(this.world, -3, -3)
+    boar = new Boar(-3, -3)
     this.objects.push(boar)
-    boar = new Boar(this.world, -2, -2)
+    boar = new Boar(-2, -2)
     this.objects.push(boar)
-    boar = new Boar(this.world, -1, -1)
+    boar = new Boar(-1, -1)
     this.objects.push(boar)
-    boar = new Boar(this.world, 0, 0)
+    boar = new Boar(0, 0)
     this.objects.push(boar)
-    boar = new Boar(this.world, 3, -3)
+    boar = new Boar(3, -3)
     this.objects.push(boar)
-    boar = new Boar(this.world, 2, -2)
+    boar = new Boar(2, -2)
     this.objects.push(boar)
-    boar = new Boar(this.world, 1, -1)
+    boar = new Boar(1, -1)
     this.objects.push(boar)
-    boar = new Boar(this.world, 4, -4)
+    boar = new Boar(4, -4)
     this.objects.push(boar)
   }
 
   createPlanet () {
-    this.planet = new Planet(this.world)
+    this.planet = new Planet()
     this.objects.push(this.planet)
   }
 

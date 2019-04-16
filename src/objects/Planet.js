@@ -5,10 +5,9 @@ import vertexShader from '../shaders/planet.vert'
 import fragmentShader from '../shaders/planet.frag'
 
 export default class Planet extends Object3D {
-  constructor (world) {
+  constructor () {
     super()
 
-    this.world = world
     this.object = null
     this.createGeometry()
     this.createMaterial()
@@ -47,17 +46,10 @@ export default class Planet extends Object3D {
 
   createObject () {
     this.object = new Mesh(this.geometry, this.material)
-
-    // var groundShape = new CPlane()
-    // this.groundBody = new Body({ mass: 0, shape: groundShape })
-    // this.world.add(this.groundBody)
-
     this.add(this.object)
   }
 
   update (_, e) {
     this.material.uniforms['time'].value = e
-    // this.position.set(this.groundBody.position.x, this.groundBody.position.y, this.groundBody.position.z)
-    // this.position.set(this.groundBody.position)
   }
 }
