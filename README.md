@@ -1,8 +1,8 @@
-# Three js starter
+# Boar experiment
 
-## Starter
+> Monthly experiment made at @Akaru_studio. Theme: boar and rainbow
 
-Parti depuis [Three-seed](https://github.com/edwinwebb/three-seed).
+![video](doc/preview.mp4)
 
 ## Commandes
 
