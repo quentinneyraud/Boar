@@ -2,7 +2,7 @@
 
 > Monthly experiment made at @Akaru_studio. Theme: boar and rainbow
 
-![preview](./doc/preview.mp4)
+![preview](./doc/preview.gif)
 
 ## Commandes
 
